@@ -1,5 +1,18 @@
 import React, { Component } from 'react';
-import { View,Image,Text,StyleSheet,TextInput,Dimensions,TouchableOpacity,CheckBox,ScrollView,DatePickerAndroid,Alert } from 'react-native';
+import { 
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  TextInput,
+  Dimensions,
+  TouchableOpacity,
+  CheckBox,
+  ScrollView,
+  DatePickerAndroid,
+  Alert,
+  AsyncStorage
+} from 'react-native';
 
 import { styles } from '../styles';
 
@@ -21,7 +34,9 @@ export default class SignUp extends Component {
       errPassword: '',
       dob : '',
       errDob : '',
-      showDate : false
+      showDate : false,
+      iconName : 'eye',
+      passwordVisible : false,
     };
   }
   allInputFields = (text,field) =>{
@@ -36,6 +51,16 @@ export default class SignUp extends Component {
     }
   }
 
+  onPasswordVisiblityHandler = () => {
+    let iconName = this.state.passwordVisible ? 'eye' : 'eye-off'
+    this.setState(prevState => {
+        return{
+            passwordVisible : !(prevState.passwordVisible),
+            iconName : iconName
+        }
+    })
+  }
+
   validity = () => {
   
 
@@ -43,6 +68,9 @@ export default class SignUp extends Component {
     this.state.userName == "" ? this.setState({errUserName : 'Please enter username'}) : this.setState({errUserName:''});
     this.state.password == "" ? this.setState({errPassword : 'Please enter password'}) : this.setState({errPassword:''});
     this.state.dob == "" ? this.setState({errDob : 'Please enter date of birth'}) : this.setState({errDob : ''});
+    
+    //Checkbox issue 
+
     this.state.checkedAge == true ? this.setState({age : 1}) : this.setState({age : 0});
 
     this.state.checkedPrivacy == true ? this.setState({privacy : 1}) : this.setState({privacy : 0});
@@ -56,9 +84,7 @@ export default class SignUp extends Component {
 
   }
 
-  onPressSignUp = () => {
-
-
+  onPressSignUp = async() => {
 
     var form = new FormData();
 
@@ -87,12 +113,16 @@ export default class SignUp extends Component {
           alert(res.message)
         } 
         else{
+
+          AsyncStorage.setItem('email',this.state.email);
+
+          AsyncStorage.setItem('passowrd',this.state.password);
+
           Alert.alert(
             'Success',
             res.message,
             [
-              // {text: 'No', onPress: () => alert(this.constructor.name), style: 'cancel'},
-              {text: 'Yes', onPress: () => this.props.navigation.navigate('signup2') },
+              {text: 'Yes', onPress: () => this.props.navigation.navigate('EmailVerification') },
             ],
             { cancelable: false }
         );
@@ -155,13 +185,22 @@ export default class SignUp extends Component {
             <View style={{marginVertical:15}}></View>
 
             <View style={styles.inputButtonContainer}>
+
                 <Image  style={styles.passwordIcon} source={require('../assests/Sign_in/password_icon.png')} />
                 <TextInput
+                    secureTextEntry={!this.state.passwordVisible}
                     style={styles.inputButton}
                     placeholderTextColor="#fff"
                     onChangeText={(text) => this.allInputFields(text,'password')}
                     placeholder="Password"/>
-                {/* <Image  style={styles.passwordShowIcon} source={require('../assests/Sign_in/password_icon.png')} /> */}
+
+                <TouchableOpacity
+                        style={{marginRight:10}}
+                        onPress={() => this.onPasswordVisiblityHandler()}>
+                        <MaterialCommunityIcons name={this.state.iconName} size={20} color="#fff"/>
+                </TouchableOpacity>
+
+
             </View>
             <Text style={{color:'#fff'}}>{this.state.errPassword}</Text>
 

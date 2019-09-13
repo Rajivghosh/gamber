@@ -5,12 +5,13 @@ import SignIn from "../screens/signin";
 import Reset from "../screens/reset";
 // import SignUp from "../screens/signup2";
 import SignUp2 from "../screens/signup2"
-import Lobby from "../screens/lobby";
+import  EventCategory from "../screens/eventCategory";
 import Filter from "../screens/filter";
 // import signup2 from "../screens/signup";
 import SignUp from "../screens/signup"
 // import EmailVerification from "../screens/emailverification";
 import EmailVerification from '../screens/emailverification'
+import ForgotPassword from "../screens/forgotPassword";
 const MainAppNavigator = createStackNavigator(
     {
         Splash: Splash,
@@ -19,12 +20,13 @@ const MainAppNavigator = createStackNavigator(
         Reset : Reset,
         SignUp : SignUp,
         SignUp2: SignUp2,
-        Lobby : Lobby,
+        EventCategory: EventCategory,
         Filter : Filter,
-        EmailVerification : EmailVerification
+        EmailVerification : EmailVerification,
+        ForgotPassword : ForgotPassword
     },
     {
-        initialRouteName: "SignUp",
+        initialRouteName: "SignIn",
         headerMode: "none"
     }
 );

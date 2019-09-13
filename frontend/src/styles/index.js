@@ -65,9 +65,10 @@ export const styles = StyleSheet.create({
         paddingRight: 10,
         paddingBottom: 10,
         paddingLeft: 0,
+        marginLeft:10,
         color: '#fff',
         width: width *.80,
-        fontSize: 15,
+        fontSize: 16,
         fontWeight:'100'
     },
     categories:{
