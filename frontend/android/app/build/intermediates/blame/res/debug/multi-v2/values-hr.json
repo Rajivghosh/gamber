@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/dapl-asset-207/Desktop/gamebar/gamebar/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-hr/values-hr.xml",
+            "outputFile": "/home/dapl-asset-207/Desktop/all_projects/gamber/frontend/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-hr/values-hr.xml",
             "map": [
                 {
                     "source": "/root/.gradle/caches/transforms-2/files-2.1/69abaca793e0c2549b9c618b2f34067f/res/values-hr/values-hr.xml",

@@ -12,6 +12,12 @@ import SignUp from "../screens/signup"
 // import EmailVerification from "../screens/emailverification";
 import EmailVerification from '../screens/emailverification'
 import ForgotPassword from "../screens/forgotPassword";
+import Lobby from "../screens/lobby";
+import CompetitionLevel from "../screens/competitionLevel";
+import EventList from "../screens/eventList";
+
+
+
 const MainAppNavigator = createStackNavigator(
     {
         Splash: Splash,
@@ -20,13 +26,16 @@ const MainAppNavigator = createStackNavigator(
         Reset : Reset,
         SignUp : SignUp,
         SignUp2: SignUp2,
+        Lobby : Lobby,
         EventCategory: EventCategory,
         Filter : Filter,
         EmailVerification : EmailVerification,
-        ForgotPassword : ForgotPassword
+        ForgotPassword : ForgotPassword,
+        CompetitionLevel : CompetitionLevel,
+        EventList : EventList
     },
     {
-        initialRouteName: "SignIn",
+        initialRouteName: "Lobby",
         headerMode: "none"
     }
 );

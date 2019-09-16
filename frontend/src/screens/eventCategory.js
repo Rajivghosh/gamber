@@ -1,14 +1,65 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView,Image,StyleSheet } from 'react-native';
+import { View, Text, ScrollView,Image,StyleSheet,AsyncStorage, TouchableOpacity } from 'react-native';
 import { styles } from '../styles';
+
 export default class EventCategory extends Component {
   constructor(props) {
     super(props);
     this.state = {
 
+      category : [],
+
+      compLevelId : '',
+      screenId: ''
 
 
     };
+  }
+
+  componentDidMount = async() => {
+
+    let token = await AsyncStorage.getItem('token');
+
+    console.log(`token ${token}`);
+
+    // let screen_id = await AsyncStorage.getItem('screen_id');
+
+    // console.log(`screen_id ${screen_id}`)
+
+    const { navigation } = this.props;
+    
+    const comp_level_id = navigation.getParam('comp_level_id');
+    this.setState({compLevelId : comp_level_id})
+
+    const screen_id = navigation.getParam('screen_id');
+    this.setState({screenId : screen_id})
+
+    console.log(`comp_level_id ${comp_level_id}`);
+    console.log(`screen id ${screen_id}`);
+
+    let form = new FormData();
+
+    form.append('token',token);
+    form.append('screen_id',screen_id);
+    form.append('comp_level_id',comp_level_id);
+
+    fetch('https://nodejsdapldevelopments.com/gamebar/public/api/event_category',{
+      method : 'POST',
+      headers:{
+        'Content-Type': "multipart/form-data"
+      },
+      body: form
+    })
+    .then(res => res.json())
+    .then(res => {
+      console.log(res);
+
+      this.setState({category : res.result.category})
+
+      console.log(this.state.category)
+
+    })
+
   }
 
   render() {
@@ -23,66 +74,26 @@ export default class EventCategory extends Component {
                         <Image  style={{width:27,height:27,marginVertical:30}} source={require('../assests/Common_icon/notification_icon.png')}/>
                     </View>
               </View>
-              <View style={styles.categories}>
-                  <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                    <Text style={inlineStyle.textStyle}>challenges</Text>
-                    <View>
-                     <View style={styles.categoryNumber}>
-                         <View> 
-                            <Text style={inlineStyle.pointsStyle}>5</Text>
+              {
+                this.state.category.map(data => {
+                  return(
+                    <TouchableOpacity
+                      onPress={() => this.props.navigation.navigate('EventList',{comp_level_id:this.state.compLevelId,screen_id:this.state.screenId,category_id:data.id})} 
+                      style={styles.categories} key={data.id}>
+                      <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                        <Text style={inlineStyle.textStyle}>{data.name}</Text>
+                        <View>
+                         <View style={styles.categoryNumber}>
+                             <View> 
+                                <Text style={inlineStyle.pointsStyle}>{data.count}</Text>
+                             </View>
                          </View>
-                     </View>
-                    </View>
-                  </View>
-              </View>
-              <View style={styles.categories}>
-                  <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                    <Text style={inlineStyle.textStyle}>head-to-head</Text>
-                    <View>
-                     <View style={styles.categoryNumber}>
-                         <View style={{justifyContent:'center',alignContent:'center'}}> 
-                            <Text style={inlineStyle.pointsStyle}>5</Text>
-                         </View>
-                     </View>
-                    </View>
-                  </View>
-              </View>
-              <View style={styles.categories}>
-                  <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                    <Text style={inlineStyle.textStyle}>tournaments</Text>
-                    <View>
-                     <View style={styles.categoryNumber}>
-                         <View style={{justifyContent:'center',alignContent:'center'}}> 
-                            <Text style={inlineStyle.pointsStyle}>5</Text>
-                         </View>
-                     </View>
-                    </View>
-                  </View>
-              </View>
-              <View style={styles.categories}>
-                  <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                    <Text style={inlineStyle.textStyle}>ladders</Text>
-                    <View>
-                     <View style={styles.categoryNumber}>
-                         <View style={{justifyContent:'center',alignContent:'center'}}> 
-                            <Text style={inlineStyle.pointsStyle}>5</Text>
-                         </View>
-                     </View>
-                    </View>
-                  </View>
-              </View>
-              <View style={styles.categories}>
-                  <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                    <Text style={inlineStyle.textStyle}>leagues</Text>
-                    <View>
-                     <View style={styles.categoryNumber}>
-                         <View style={{justifyContent:'center',alignContent:'center'}}> 
-                            <Text style={inlineStyle.pointsStyle}>5</Text>
-                         </View>
-                     </View>
-                    </View>
-                  </View>
-              </View>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  )
+                })
+              }
           </ScrollView>
    
     );

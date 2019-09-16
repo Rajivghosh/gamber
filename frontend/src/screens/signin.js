@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
-import { View,Image,Text,StyleSheet,TextInput,Dimensions,TouchableOpacity,ScrollView,Alert } from 'react-native';
+import { 
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  TextInput,
+  Dimensions,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+  AsyncStorage 
+} from 'react-native';
 import { styles } from '../styles';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -62,15 +73,27 @@ class SignIn extends Component {
             console.log(res);
 
             if(res.message == "Successful, Login"){
-                Alert.alert(
-                    'Success',
-                    res.message,
-                    [
-                    
-                      {text: 'Ok', onPress: () => this.props.navigation.navigate('EventCategory') },
-                    ],
-                    { cancelable: false }
-                  )
+
+                // let token = res.result.filter(i =>  i == "login_token");
+
+                // console.log(res.result[0].login_token);
+
+                let token = res.result[0].login_token
+
+                // console.log(token);
+
+                AsyncStorage.setItem('token',res.result[0].login_token);
+             
+              
+              Alert.alert(
+                  'Success',
+                  res.message,
+                  [
+                  
+                    {text: 'Ok', onPress: () => this.props.navigation.navigate('Lobby') },
+                  ],
+                  { cancelable: false }
+                )
             }
             else{
               alert(res.message)

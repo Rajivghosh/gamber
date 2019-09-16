@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
         borderColor: '#292f41',
         borderWidth:1,
         paddingHorizontal:20,
-        marginVertical:10,
+        marginVertical:20,
         paddingVertical:10
     },
     categoryNumber: {
