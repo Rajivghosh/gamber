@@ -1,5 +1,6 @@
 import React, { Component }  from 'react';
 import { View, Text, ScrollView,Image,StyleSheet,AsyncStorage,TouchableOpacity } from 'react-native';
+import Header from '../Components/header';
 
 class competitionLevel extends Component {
   constructor(props) {
@@ -57,15 +58,7 @@ class competitionLevel extends Component {
   render() {
     return (
         <ScrollView style={inlineStyle.container}>
-              <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                    <View>
-                        <Text style={{color:'#fff',marginVertical:30,fontSize:16}}>Competition Level</Text>
-                    </View>
-                    <View style={{flexDirection:'row'}}>
-                        <Image  style={{width:30,height:30,marginRight:10,marginVertical:30}} source={require('../assests/Common_icon/help_icon.png')}/>
-                        <Image  style={{width:27,height:27,marginVertical:30}} source={require('../assests/Common_icon/notification_icon.png')}/>
-                    </View>
-              </View>
+              <Header title="Competition Level" navigation={this.props.navigation}/>
               <View>
                 {
                   this.state.game.map(data => {

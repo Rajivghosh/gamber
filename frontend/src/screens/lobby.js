@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView,Image,StyleSheet,AsyncStorage,TouchableOpacity } from 'react-native';
 import { styles } from '../styles';
+import Header from '../Components/header'
 export default class Lobby extends Component {
   constructor(props) {
     super(props);
@@ -45,23 +46,19 @@ export default class Lobby extends Component {
 
   render() {
     return (
+     
+         
           <ScrollView style={inlineStyle.container}>
-              <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                    <View>
-                        <Text style={{color:'#fff',marginVertical:30,fontSize:16}}>Lobby</Text>
-                    </View>
-                    <View style={{flexDirection:'row'}}>
-                        <Image  style={{width:30,height:30,marginRight:10,marginVertical:30}} source={require('../assests/Common_icon/help_icon.png')}/>
-                        <Image  style={{width:27,height:27,marginVertical:30}} source={require('../assests/Common_icon/notification_icon.png')}/>
-                    </View>
-              </View>
+               <Header title="Lobby" navigation={this.props.navigation}/>
               {
                 this.state.datas.map(data => {
                  
                   return(
                     <View key={data.id}>
                       <View style={{flex:1 , marginVertical:10}}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('CompetitionLevel',{screen_id : data.id})}>
+                        <TouchableOpacity
+                            style={{borderWidth:1}} 
+                            onPress={() => this.props.navigation.navigate('CompetitionLevel',{screen_id : data.id})}>
                           <Image source={{uri : data.logo}} style={{height:150,width:'100%'}} />
                         </TouchableOpacity>
                       </View>

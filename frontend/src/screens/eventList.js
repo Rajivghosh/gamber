@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView,Image,StyleSheet,AsyncStorage, TouchableOpacity,TextInput } from 'react-native';
 import { styles } from '../styles';
+import Header from '../Components/header';
+import Search from 'react-native-vector-icons/AntDesign'
 
 export default class EventList extends Component {
   constructor(props) {
@@ -53,6 +55,7 @@ export default class EventList extends Component {
         this.setState({list : res.result.list[0]});
         this.setState({game: res.result.game});
 
+
         const newList = this.state.list.map(index =>  index)
         this.setState({newList : newList});
     
@@ -63,17 +66,17 @@ export default class EventList extends Component {
   }
 
   render() {
+    const { navigation } = this.props;
+    
+    const comp_level_id = navigation.getParam('comp_level_id');
+
+    const screen_id = navigation.getParam('screen_id');
+
+    const category_id = navigation.getParam('category_id');
+
     return (
         <ScrollView style={inlineStyle.container}>
-              <View style={{flexDirection:'row',justifyContent:'space-between',marginHorizontal:10}}>
-                    <View>
-                        <Text style={{color:'#fff',marginVertical:30,fontSize:16}}>Event Category</Text>
-                    </View>
-                    <View style={{flexDirection:'row'}}>
-                        <Image  style={{width:30,height:30,marginRight:10,marginVertical:30}} source={require('../assests/Common_icon/help_icon.png')}/>
-                        <Image  style={{width:27,height:27,marginVertical:30}} source={require('../assests/Common_icon/notification_icon.png')}/>
-                    </View>
-              </View>
+              <Header title="Event List" navigation={this.props.navigation}/>
 
               <View>
                 {
@@ -86,9 +89,10 @@ export default class EventList extends Component {
                     })
                 }
               </View>
+              
               <View style={{marginHorizontal:10,marginTop:30}}>
                 <View style={styles.inputButtonContainer}>
-                    <Image  style={styles.passwordIcon} source={require('../assests/Sign_up/user_icon.png')} />
+                    <Search name="search1" color="#fff" size={20}/>
                     <TextInput
                         style={styles.inputButton}
                         placeholderTextColor="#fff"
@@ -97,22 +101,30 @@ export default class EventList extends Component {
                 </View>
 
                 <View style={{marginTop:10}}>
+                    <View style={{justifyContent:'center',marginBottom:8}}>
+                      <Text style={{color:'#fff',textAlign:'center'}}>List of Events</Text>
+                    </View>
 
-                  <View style={{justifyContent:'center',marginBottom:8}}>
-                    <Text style={{color:'#fff',textAlign:'center'}}>List of Events</Text>
-                  </View>
-
-                  <View>
-                    <View style={{borderBottomWidth:1,borderColor:'#fff'}}></View>
-                  </View>
-
+                    <View>
+                      <View style={{borderBottomWidth:1,borderColor:'#fff'}}></View>
+                    </View>
                 </View>
 
                 <View>
                     {
                         this.state.list.map(data =>{
                             return(
-                                <View style={styles.categories} key={data.id}> 
+                                <TouchableOpacity
+                                    onPress={() => this.props.navigation.navigate('EventDetails',{
+                                        comp_level_id : comp_level_id,
+                                        screen_id : screen_id,
+                                        category_id : category_id,
+                                        event_id : data.id
+
+
+                                    })} 
+                                    style={styles.categories} 
+                                    key={data.id}> 
                                     <View style={{flexDirection:"row",marginVertical:10}}>
                                         <Text style={{color:'#fff'}}>{data.gen_title}</Text>
                                     </View>
@@ -139,7 +151,7 @@ export default class EventList extends Component {
                                         </View>
                                     </View>
 
-                                </View>
+                                </TouchableOpacity>
                             )
                         })
                     }
