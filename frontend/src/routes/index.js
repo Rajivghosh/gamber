@@ -70,7 +70,7 @@ const MainAppNavigator = createStackNavigator(
 
     },
     {
-        initialRouteName: "Lobby",
+        initialRouteName: "SignIn",
         headerMode: "none"
     }
 );
