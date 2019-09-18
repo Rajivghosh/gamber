@@ -111,7 +111,21 @@ export default class EventList extends Component {
   }
 
   goToFilterPage = () => {
-    this.props.navigation.navigate("Filter")
+
+    const { navigation } = this.props;
+    
+    const comp_level_id = navigation.getParam('comp_level_id');
+
+    const screen_id = navigation.getParam('screen_id');
+
+    const category_id = navigation.getParam('category_id');
+
+
+    this.props.navigation.navigate("Filter",{
+      screen_id : screen_id,
+      copm_level_id : comp_level_id,
+      category_id : category_id
+    })
   }
 
   render() {

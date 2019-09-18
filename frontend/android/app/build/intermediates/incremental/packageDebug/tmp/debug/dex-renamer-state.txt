@@ -1,4 +1,4 @@
-#Fri Sep 13 12:41:53 IST 2019
+#Tue Sep 17 19:08:13 IST 2019
 base.0=/home/dapl-asset-207/Desktop/all_projects/gamber/frontend/android/app/build/intermediates/transforms/dexMerger/debug/0
 path.0=classes.dex
 renamed.0=classes.dex

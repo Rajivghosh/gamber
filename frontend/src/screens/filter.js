@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, Slider, ScrollView, AsyncStorage, Picker, TouchableOpacity, Dimensions } from 'react-native'
 import { styles } from '../styles';
+
+import DatePicker from 'react-native-datepicker'
+
+
+
 const { width, height } = Dimensions.get('window')
 
 export default class Filter extends Component {
@@ -38,7 +43,19 @@ export default class Filter extends Component {
             })
     }
 
-    onApplyFilter = () => {
+    onApplyFilter = async () => {
+        const { navigation } = this.props;
+
+        const comp_level_id = navigation.getParam('comp_level_id');
+
+        const screen_id = navigation.getParam('screen_id');
+
+        const category_id = navigation.getParam('category_id');
+
+
+        let token = await AsyncStorage.getItem('token');
+
+
         const { eventId, entryType, startDate, endDate, entryFee, payout } = this.state;
         if (eventId === "") {
             alert("Select an event")
@@ -54,15 +71,15 @@ export default class Filter extends Component {
             alert("Select payou")
         } else {
             let form = new FormData();
-            form.append('token', "bfae7f26b2ab50bdbf3c19d58fec63d6");
-            form.append('screen_id', 14);
-            form.append('copm_level_id', 13);
-            form.append('category_id', 35);
+            form.append('token', token);
+            form.append('screen_id', screen_id);
+            form.append('comp_level_id', comp_level_id);
+            form.append('category_id', category_id);
             form.append('start_date', startDate);
             form.append('end_date', endDate);
             form.append('entry_fees', entryFee);
             form.append('payout', payout);
-            form.append('venue', event);
+            form.append('venue', eventId);
             form.append('game_entry_type', entryType);
 
             fetch("https://nodejsdapldevelopments.com/gamebar/public/api/filtered_event_list", {
@@ -81,6 +98,7 @@ export default class Filter extends Component {
     }
 
     render() {
+        console.log("start data", this.state.startDate)
         return (
             <ScrollView style={inlineStyle.container}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -98,19 +116,67 @@ export default class Filter extends Component {
                     <View style={{ borderBottomWidth: 1, borderColor: '#707287', marginTop: 10 }}></View>
                     <View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
-                            <Text style={inlineStyle.text}>Start Date</Text>
-                            <View>
+                            <Text style={inlineStyle.text}>Start Date : </Text>
+                            <DatePicker
+                                    style={{width: 150}}
+                                    date={this.state.startDate}
+                                    mode="date"
+                                    placeholder="Start date"
+                                    format="YYYY-M-D"
+                                
+                                    confirmBtnText="Confirm"
+                                    cancelBtnText="Cancel"
+                                    customStyles={{
+                                    dateIcon: {
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: 4,
+                                        marginLeft: 0
+                                    },
+                                    dateInput: {
+                                        marginLeft: 36
+                                    }
+                                    
+                                    }}
+                                    onDateChange={(date) => {this.setState({startDate: date})}}
+                                />
+
+                            {/* <View>
                                 <Image style={{ width: 5, height: 6 }} source={require('../assests/Filter/up_arrow.png')} />
-                            </View>
+                            </View> */}
                             <View style={inlineStyle.radioButton}>
                                 <View style={inlineStyle.radioButtonChild}></View>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
-                            <Text style={inlineStyle.text}>Stop Date</Text>
-                            <View>
+                            <Text style={inlineStyle.text}>Stop Date : </Text>
+                            <DatePicker
+                                    style={{width: 150}}
+                                    date={this.state.endDate}
+                                    mode="date"
+                                    placeholder="End date"
+                                    format="YYYY-M-D"
+                                
+                                    confirmBtnText="Confirm"
+                                    cancelBtnText="Cancel"
+                                    customStyles={{
+                                    dateIcon: {
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: 4,
+                                        marginLeft: 0
+                                    },
+                                    dateInput: {
+                                        marginLeft: 36
+                                    }
+                                    
+                                    }}
+                                    onDateChange={(date) => {this.setState({endDate: date})}}
+                                />
+
+                            {/* <View>
                                 <Image style={{ width: 5, height: 6 }} source={require('../assests/Filter/down_arrow.png')} />
-                            </View>
+                            </View> */}
                             <View style={inlineStyle.radioButton}>
                                 <View style={inlineStyle.radioButtonChild}></View>
                             </View>
@@ -194,13 +260,13 @@ export default class Filter extends Component {
                     <View style={{ borderBottomWidth: 1, borderColor: '#707287', marginTop: 10 }}></View>
                     <View style={{ flexDirection: 'row', marginTop: 20 }}>
                         <TouchableOpacity style={inlineStyle.entryFee}
-                            onPress={() => this.setState({ entry: 1 })}
+                            onPress={() => this.setState({ entryType: 1 })}
                         >
                             <Text style={inlineStyle.text}>SINGLE</Text>
                         </TouchableOpacity>
                         <View style={{ marginHorizontal: 7 }}></View>
                         <TouchableOpacity style={inlineStyle.entryFee}
-                            onPress={() => this.setState({ entry: 2 })}
+                            onPress={() => this.setState({ entryType: 2 })}
                         >
                             <Text style={inlineStyle.text}>MULTIPLE</Text>
                         </TouchableOpacity>
