@@ -58,7 +58,7 @@ export default class EventDetails extends Component {
                 <Header title="Event Details" navigation={this.props.navigation} />
                 <View>
                     <View style={{ backgroundColor: "white", height: 180 }}>
-                        <Image source={{uri:this.state.detials.banner}} style={{width:'100%',height:'100%'}} />
+                        <Image source={{uri:this.state.detials.banner}} style={{width:30,height:40}} />
                     </View>
                     <Text style={{ color: "white", marginLeft: 10 }}>{this.state.detials.gen_title}</Text>
                 </View>

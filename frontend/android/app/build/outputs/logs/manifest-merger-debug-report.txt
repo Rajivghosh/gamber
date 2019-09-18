@@ -5,6 +5,7 @@ INJECTED from /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/android/
 INJECTED from /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/android/app/src/main/AndroidManifest.xml:1:1-26:12
 INJECTED from /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/android/app/src/main/AndroidManifest.xml:1:1-26:12
 MERGED from /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/android/app/src/main/AndroidManifest.xml:1:1-26:12
+MERGED from [:rn-range-slider] /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/node_modules/rn-range-slider/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-vector-icons] /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-gesture-handler] /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-reanimated] /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/node_modules/react-native-reanimated/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
@@ -136,6 +137,8 @@ uses-sdk
 INJECTED from /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/android/app/src/main/AndroidManifest.xml
 INJECTED from /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/android/app/src/main/AndroidManifest.xml
+MERGED from [:rn-range-slider] /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/node_modules/rn-range-slider/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:rn-range-slider] /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/node_modules/rn-range-slider/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-vector-icons] /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-vector-icons] /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-gesture-handler] /home/dapl-asset-207/Desktop/all_projects/gamber/frontend/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41

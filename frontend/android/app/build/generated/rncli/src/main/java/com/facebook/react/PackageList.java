@@ -19,6 +19,8 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 // react-native-vector-icons
 import com.oblador.vectoricons.VectorIconsPackage;
+// rn-range-slider
+import com.ashideas.rnrangeslider.RangeSliderPackage;
 
 public class PackageList {
   private Application application;
@@ -54,7 +56,8 @@ public class PackageList {
       new MainReactPackage(),
       new RNGestureHandlerPackage(),
       new ReanimatedPackage(),
-      new VectorIconsPackage()
+      new VectorIconsPackage(),
+      new RangeSliderPackage()
     ));
   }
 }
