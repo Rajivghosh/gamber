@@ -57,7 +57,10 @@ class competitionLevel extends Component {
 
   render() {
     return (
+      <>
+      { this.state.screenId == 14 ? 
         <ScrollView style={inlineStyle.container}>
+        
               <Header title="Competition Level" navigation={this.props.navigation}/>
               <View>
                 {
@@ -88,7 +91,9 @@ class competitionLevel extends Component {
                   })
                 }
               </View>
-          </ScrollView>
+          </ScrollView> : <View style={{justifyContent:'center',alignItems:'center',backgroundColor:'#090f1f',flex:1}}><Text style={{color:'#fff',fontSize:30}}>Upcoming..</Text></View>
+      } 
+      </>
     );
   }
 }

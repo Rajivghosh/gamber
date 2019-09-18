@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
 import { styles } from '../styles';
 
@@ -27,6 +28,7 @@ class SignIn extends Component {
       errPassword: '',
       iconName: 'eye',
       passwordVisible: false,
+      showIndicator :  false
 
     };
   }
@@ -56,6 +58,8 @@ class SignIn extends Component {
     this.state.password == "" ? this.setState({ errPassword: `Please enter password` }) : this.setState({ errPassword: `` });
 
     if (this.state.email !== "" && this.state.password !== "") {
+
+      this.setState({showIndicator : true})
 
       let form = new FormData();
       form.append('email', this.state.email);
@@ -98,6 +102,8 @@ class SignIn extends Component {
           else {
             alert(res.message)
           }
+
+          this.setState({showIndicator : false})
         })
     }
 
@@ -106,6 +112,8 @@ class SignIn extends Component {
 
   render() {
     return (
+    <>
+    { !this.state.showIndicator ?
       <ScrollView>
         <View style={styles.intro}>
           <Image style={{ width: 200, height: 80 }} source={require('../assests/Sign_in/game_bar_logo.png')} />
@@ -170,7 +178,9 @@ class SignIn extends Component {
           </View>
 
         </View>
-      </ScrollView>
+      </ScrollView> : <View style={{justifyContent:'center',alignItems:'center',flex:1}}><ActivityIndicator size="large"/></View>
+    }
+    </>
     );
   }
 }

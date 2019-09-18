@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity,AsyncStorage } from 'react-native';
+import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity,AsyncStorage, ToastAndroid } from 'react-native';
 import { styles } from '../styles';
 import Header from '../Components/header'
 
@@ -10,7 +10,10 @@ export default class EventDetails extends Component {
         super(props);
         this.state = {
             game : [],
-            detials: [],
+            detials: "",
+            extractedDate : "",
+            extractedTime : "",
+            days:""
         };
     }
     componentDidMount = async() => {
@@ -44,36 +47,105 @@ export default class EventDetails extends Component {
         })
         .then(res => res.json())
         .then(res => {
-            console.log(res)
+            console.log("EVENT DETAILS", res)
             this.setState({game : res.result.game})
             this.setState({detials : res.result.details})
-            // console.log(this.state.game);
+           
+            const date = this.state.detials.event_start_date;
+
+            const endDate = this.state.detials.event_end_date;
+
+            const date1 = date.substr(0,date.indexOf(' '));
+
+            console.log(date1);
+
+            this.setState({extractedDate : date1});
+
+            const time1 = date.substr(date.indexOf(' ')+1);
+
+            console.log(time1);
+
+            this.setState({extractedTime : time1});
+
+            const endDate1 = endDate.substr(0,endDate.indexOf(' '));
+
+            console.log(endDate1-date1);
+
+            var calDate1 = new Date(date1);
+            var calDate2 = new Date(endDate1);
+            var subDate = calDate2 - calDate1;
+            var days = (((subDate/1000)/60)/(60*24));
+            this.setState({days : days})
+
+
+
+        })
+    }
+
+    onJoin = async() =>{
+
+        let token = await AsyncStorage.getItem('token');
+
+        const { navigation } = this.props;
+
+        const comp_level_id = navigation.getParam('comp_level_id');
+    
+        const screen_id = navigation.getParam('screen_id');
+    
+        const category_id = navigation.getParam('category_id');
+
+        const event_id = navigation.getParam('event_id')
+        
+        let form = new FormData();
+        form.append('token', token);
+        form.append('screen_id', screen_id);
+        form.append('comp_level_id', comp_level_id);
+        form.append('category_id', category_id);
+        form.append('event_id', event_id);
+
+        fetch('https://nodejsdapldevelopments.com/gamebar/public/api/event_joining', {
+            method: 'POST',
+            headers: {
+                'Content-Type': "multipart/form-data"
+            },
+            body: form
+        })
+        .then(res => res.json())
+        .then(res => {
+           console.log("join datya", res)
+           if(res.status===100 || res.status===300){
+            ToastAndroid.show(res.message, ToastAndroid.SHORT, ToastAndroid.CENTER,);
+           }
+           
         })
 
     }
 
     render() {
+
+        
+
         return (
             <ScrollView style={inlineStyle.container}>
                 <Header title="Event Details" navigation={this.props.navigation} />
                 <View>
-                    <View style={{ backgroundColor: "white", height: 180 }}>
-                        <Image source={{uri:this.state.detials.banner}} style={{width:30,height:40}} />
+                    <View style={{ backgroundColor: "white",height:200}}>
+                        <Image source={{uri:this.state.detials.banner}} style={{height:'100%'}}/>
                     </View>
                     <Text style={{ color: "white", marginLeft: 10 }}>{this.state.detials.gen_title}</Text>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 20 }}>
                     <View>
                         <Text style={{ color: "white", marginLeft: 10 }}>Event Date</Text>
-                        <Text style={{ color: "white", marginLeft: 10 }}>{this.state.detials.event_start_date}</Text>
+                        <Text style={{ color: "white", marginLeft: 10 }}>{this.state.extractedDate}</Text>
                     </View>
                     <View>
                         <Text style={{ color: "white", marginLeft: 10 }}>Start Time</Text>
-                        <Text style={{ color: "white", marginLeft: 10 }}>Start Time</Text>
+                        <Text style={{ color: "white", marginLeft: 10 }}>{this.state.extractedTime}</Text>
                     </View>
                     <View>
                         <Text style={{ color: "white", marginLeft: 10 }}>Event Duration</Text>
-                        <Text style={{ color: "white", marginLeft: 10 }}>{this.state.detials.event_duration}</Text>
+                        <Text style={{ color: "white", marginLeft: 10 }}>{this.state.days} days</Text>
                     </View>
                 </View>
 
@@ -87,7 +159,11 @@ export default class EventDetails extends Component {
                     }}
                 />
                 <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 15 }}>
-                    <Text style={{ color: "white"}}>Game Type : {this.state.detials.game_type}</Text>
+                    <View style={{flexDirection:"row"}}>
+                        <Text style={{ color: "white"}}>Game Type :</Text>
+                        <Text style={{color:'green'}}>{this.state.detials.game_type}</Text>
+                    </View>
+
                     <Text style={{ color: "white"}}>Match Length : {this.state.detials.match_length} mins</Text>
                 </View>
                 <View
@@ -102,7 +178,7 @@ export default class EventDetails extends Component {
                 <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 15 }}>
                     <View>
                         <Text style={{ color: "white", marginLeft: 10 }}>Prize Pool</Text>
-                        <Text style={{ color: "white", marginLeft: 10 }}>${this.state.detials.win_prize}</Text>
+                        <Text style={{ color: "green", marginLeft: 10 }}>${this.state.detials.win_prize}</Text>
                     </View>
                     <View>
                         <Text style={{ color: "white", marginLeft: 10 }}>Total Enteries</Text>
@@ -187,15 +263,29 @@ export default class EventDetails extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
+
                 <View style={{ marginBottom: 20, alignItems: "center", justifyContent: "center" }}>
-                    <TouchableOpacity style={{
+                    {this.state.detials.event_status === 1 ?
+                    <TouchableOpacity 
+                    onPress={()=>{this.onJoin()}}
+                    style={{
                         backgroundColor: "#01b7ff",
                         paddingRight: 50, paddingLeft: 50, paddingTop: 10, paddingBottom: 10, borderRadius: 50
                     }}>
                         <Text style={{ fontSize: 20, color: "#ffffff" }}>
                             JOIN
                         </Text>
+                    </TouchableOpacity>:
+                    <TouchableOpacity disabled={true} style={{
+                        backgroundColor: "#01b7ff",
+                        paddingRight: 50, paddingLeft: 50, paddingTop: 10, paddingBottom: 10, borderRadius: 50
+                    }}>
+                        <Text style={{ fontSize: 20, color: "#ffffff" }}>
+                            UPCOMING
+                        </Text>
                     </TouchableOpacity>
+                    }
+                    
                 </View>
 
             </ScrollView>

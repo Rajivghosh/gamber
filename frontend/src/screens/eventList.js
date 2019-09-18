@@ -15,15 +15,41 @@ export default class EventList extends Component {
       newList: [],
       searchList: [],
       searchText : "",
+      filterFlag : false,
+      searchListFlag : false
       // showSearch : false,
     };
   }
 
+  componentWillReceiveProps(newProps){
+    console.log("newPorosw", newProps)
+    this.setState({
+      searchList:newProps.navigation.state.params.list,
+      filterFlag: true,
+    })
+
+    // if(this.state.searchList == ""){
+    //   this.setState({searchListFlag :  false})
+    // }
+
+    //pasding to search event
+
+    this.searchEvent(this.state.searchList);
+
+  }
+
   componentDidMount = async () => {
+      console.log("did mount")
+  
 
     let token = await AsyncStorage.getItem('token');
 
     const { navigation } = this.props;
+
+
+    const list = navigation.getParam('list');
+
+    console.log(list);
 
     const comp_level_id = navigation.getParam('comp_level_id');
     // this.setState({compLevelId : comp_level_id})
@@ -141,9 +167,10 @@ export default class EventList extends Component {
   
  
 
-    if(this.state.searchList != null){
+    if(this.state.searchList != undefined){
       console.log(`search list is defined`)
       searchList = (
+
         this.state.searchList.map(data => {
           return(
             <TouchableOpacity
@@ -186,18 +213,21 @@ export default class EventList extends Component {
           )
       }) 
       )
+      
     }
 
     if(this.state.searchList === undefined){
       console.log(`search list is not defined`)
       searchList = (
-        <View>
-          <Text style={{color:'#fff'}}>No data found</Text>
+        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+          <Text style={{color:'#fff',fontSize:30}}>No data found</Text>
         </View>
       )
     }
 
     return (
+    <>
+    {  category_id == 33 || category_id == 35 ? 
       <ScrollView style={inlineStyle.container}>
         <Header title="Event List" navigation={this.props.navigation} />
 
@@ -238,7 +268,7 @@ export default class EventList extends Component {
           </View>
 
           <View>
-            { this.state.searchText.length === 0 ?  
+            { this.state.searchText.length === 0 && this.state.filterFlag == false?  
               this.state.list.map(data => {
                 return (
                   <TouchableOpacity
@@ -259,7 +289,7 @@ export default class EventList extends Component {
                     <View style={{ borderBottomWidth: 1, borderColor: '#fff' }}></View>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                      <Text></Text>
+                      <Text style={{ color: '#fff' }}>{data.total_entries}</Text>
 
                       <View style={{ flexDirection: 'row' }}>
                         <Text style={{ color: '#fff', }}>${data.entry_fees}</Text>
@@ -280,25 +310,30 @@ export default class EventList extends Component {
                   </TouchableOpacity>
                 )
               }) :
-
+              // this.state.searchListFlag ? searchList : <View style={{justifyContent:"center",alignItems:"center",flex:1,backgroundColor:"#090f1f"}}><Text style={{color:"#ffff",fontSize:30}}>No data found</Text></View>
               searchList
 
             }
           </View>
         </View>
-        <TouchableOpacity style={{
-          backgroundColor: "#ffffff",
-          position: "absolute", top: 400, right: 30, borderRadius: 30,
-          alignItems: "center", justifyContent: "center", padding: 10
-        }}
-          onPress={() => { this.goToFilterPage() }}
-        >
-          <Image
-            style={{ width: 30, height: 30, borderRadius: 30 }}
-            source={require('../assests/Filter/filter.png')}
-          />
-        </TouchableOpacity>
-      </ScrollView>
+        { this.state.searchList !== undefined ? 
+          <TouchableOpacity style={{
+            backgroundColor: "#ffffff",
+            position: "absolute", top: 400, right: 30, borderRadius: 30,
+            alignItems: "center", justifyContent: "center", padding: 10
+          }}
+            onPress={() => { this.goToFilterPage() }}
+          >
+            <Image
+              style={{ width: 30, height: 30, borderRadius: 30 }}
+              source={require('../assests/Filter/filter.png')}
+            />
+          </TouchableOpacity> : null
+        }
+        
+      </ScrollView> :<View style={{justifyContent:'center',alignItems:'center',flex:1,backgroundColor:'#090f1f'}}><Text style={{color:"#fff",fontSize:30}}>Upcoming</Text></View>
+    }
+    </>
     );
   }
 }

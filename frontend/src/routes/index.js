@@ -20,6 +20,9 @@ import EventList from "../screens/eventList";
 import Header from "../Components/header";
 import Stats from '../screens/stats'
 import EventDetails from '../screens/eventDetails';
+import profile from '../screens/profile';
+import Friends from '../screens/friends';
+import GameStatistics from '../screens/stats'
 
 
 
@@ -33,12 +36,26 @@ const TabNavigator = createBottomTabNavigator(
             },
         },
         Stats: {
-            screen: Stats,
+            screen: GameStatistics,
             navigationOptions: {
                 tabBarLabel: "Stats",
                 tabBarIcon: ({ tintColor }) => (<Image source={require('../assests/Common_icon/stats_icon_select.png')} style={{width:30,height:30}}/>)
             },
         },
+        Profile: {
+            screen: profile,
+            navigationOptions: {
+                tabBarLabel: "Profile",
+                tabBarIcon: ({ tintColor }) => (<Image source={require('../assests/Common_icon/profile_icon_select.png')} style={{width:30,height:30}}/>)
+            },
+        },
+        Friends: {
+            screen: Friends,
+            navigationOptions: {
+                tabBarLabel: "Friends",
+                tabBarIcon: ({ tintColor }) => (<Image source={require('../assests/Common_icon/friends_icon_select.png')} style={{width:30,height:30}}/>)
+            }
+        }
     },
     {
         tabBarOptions:{
@@ -66,7 +83,10 @@ const MainAppNavigator = createStackNavigator(
         CompetitionLevel : CompetitionLevel,
         EventList : EventList,
         EventDetails : EventDetails,
-        Stats:Stats
+        //Upcoming 
+        Stats:GameStatistics,
+        Profile : profile,
+        Friends : Friends
 
     },
     {

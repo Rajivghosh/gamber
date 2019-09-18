@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, Slider, ScrollView, AsyncStorage, Picker, TouchableOpacity, Dimensions } from 'react-native'
+import { Text, View, StyleSheet, Image, Alert, ScrollView, AsyncStorage, Picker, TouchableOpacity, Dimensions } from 'react-native'
 import { styles } from '../styles';
-
+import RangeSlider from 'rn-range-slider';
 import DatePicker from 'react-native-datepicker'
-
-
 
 const { width, height } = Dimensions.get('window')
 
@@ -18,7 +16,8 @@ export default class Filter extends Component {
             eventId: "",
             entryFee: "",
             entryType: "",
-            payout: ""
+            payoutLow: 2000,
+            payoutHigh: 8000
         }
     }
     async componentDidMount() {
@@ -44,6 +43,8 @@ export default class Filter extends Component {
     }
 
     onApplyFilter = async () => {
+        let form = new FormData();
+
         const { navigation } = this.props;
 
         const comp_level_id = navigation.getParam('comp_level_id');
@@ -56,35 +57,31 @@ export default class Filter extends Component {
         let token = await AsyncStorage.getItem('token');
 
 
-        const { eventId, entryType, startDate, endDate, entryFee, payout } = this.state;
-        if (eventId === "") {
-            alert("Select an event")
-        } else if (entryType === "") {
-            alert("Select entries")
-        } else if (startDate === "") {
-            alert("Select start date")
-        } else if (endDate === "") {
-            alert("Select end date")
-        } else if (entryFee === "") {
-            alert("Select entry fees")
-        } else if (payout === "") {
-            alert("Select payout")
-        } else {
-            let form = new FormData();
+        const { eventId, entryType, startDate, endDate, entryFee, payoutLow, payoutHigh } = this.state;
+
+        if (eventId !== "") {
+            form.append('venue', eventId);
+        } 
+        if (entryType !== "") {
+            form.append('game_entry_type', entryType);
+        } 
+        if (startDate !== "") {
+            form.append('start_date', startDate);
+        }
+        if (endDate !== "") {
+            form.append('end_date', endDate);
+        } 
+        if (entryFee !== "") {
+            form.append('entry_fees', entryFee);
+        }   
             form.append('token', token);
             form.append('screen_id', screen_id);
             form.append('comp_level_id', comp_level_id);
-            form.append('category_id', category_id);
-            form.append('start_date', startDate);
-            form.append('end_date', endDate);
-            form.append('entry_fees', entryFee);
-            form.append('payout', payout);
-            form.append('venue', eventId);
-            form.append('game_entry_type', entryType);
+            form.append('category_id', category_id);  
+            form.append('payout', payoutLow - payoutHigh);
 
-
-            console.log(`token ${token} screen_id ${screen_id} comp_level_id ${comp_level_id} category_id ${category_id} start_date ${startDate} end_date ${endDate}
-            entryFees ${entryFee} payout ${payout} venue ${eventId} game_entry_type ${entryType} `)
+            // console.log(`token ${token} screen_id ${screen_id} comp_level_id ${comp_level_id} category_id ${category_id} start_date ${startDate} end_date ${endDate}
+            // entryFees ${entryFee} payout ${payout} venue ${eventId} game_entry_type ${entryType} `)
 
             fetch("https://nodejsdapldevelopments.com/gamebar/public/api/filtered_event_list", {
                 method: 'POST',
@@ -92,13 +89,33 @@ export default class Filter extends Component {
                     'Content-Type': "multipart/form-data"
                 },
                 body: form
-            })
+                })
                 .then(res => res.json())
                 .then(res => {
-                    console.log("result ", res)
-
+                    console.log("resultttt ", res.result.list)
+                        this.props.navigation.navigate('EventList', {
+                            
+                            list: res.result.list,
+                          })
+                    
                 })
-        }
+    }
+
+    resetData = () => {
+        Alert.alert("Reset data", "Do you want to reset data ?", [
+            { text: "No", onPress: () => (No = "no") },
+            { text: "Yes", onPress: () => this.clearState() }
+        ]);
+        return true;
+    }
+    clearState() {
+        this.setState({
+            startDate: "",
+            endDate: "",
+            eventId: "",
+            entryFee: "",
+            entryType: "",
+        })
     }
 
     render() {
@@ -122,15 +139,15 @@ export default class Filter extends Component {
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
                             <Text style={inlineStyle.text}>Start Date : </Text>
                             <DatePicker
-                                    style={{width: 150}}
-                                    date={this.state.startDate}
-                                    mode="date"
-                                    placeholder="Start date"
-                                    format="YYYY-M-D"
-                                
-                                    confirmBtnText="Confirm"
-                                    cancelBtnText="Cancel"
-                                    customStyles={{
+                                style={{ width: 150 }}
+                                date={this.state.startDate}
+                                mode="date"
+                                placeholder="Start date"
+                                format="YYYY-MM-DD"
+
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                customStyles={{
                                     dateIcon: {
                                         position: 'absolute',
                                         left: 0,
@@ -140,10 +157,9 @@ export default class Filter extends Component {
                                     dateInput: {
                                         marginLeft: 36
                                     }
-                                    
-                                    }}
-                                    onDateChange={(date) => {this.setState({startDate: date})}}
-                                />
+                                }}
+                                onDateChange={(date) => { this.setState({ startDate: date }) }}
+                            />
 
                             {/* <View>
                                 <Image style={{ width: 5, height: 6 }} source={require('../assests/Filter/up_arrow.png')} />
@@ -155,28 +171,29 @@ export default class Filter extends Component {
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
                             <Text style={inlineStyle.text}>Stop Date : </Text>
                             <DatePicker
-                                    style={{width: 150}}
-                                    date={this.state.endDate}
-                                    mode="date"
-                                    placeholder="End date"
-                                    format="YYYY-M-D"
-                                
-                                    confirmBtnText="Confirm"
-                                    cancelBtnText="Cancel"
-                                    customStyles={{
+                                style={{ width: 150 }}
+                                date={this.state.endDate}
+                                mode="date"
+                                placeholder="End date"
+                                format="YYYY-MM-DD"
+
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                customStyles={{
                                     dateIcon: {
                                         position: 'absolute',
                                         left: 0,
                                         top: 4,
-                                        marginLeft: 0
+                                        marginLeft: 0,
                                     },
                                     dateInput: {
-                                        marginLeft: 36
+                                        marginLeft: 36,
+
                                     }
-                                    
-                                    }}
-                                    onDateChange={(date) => {this.setState({endDate: date})}}
-                                />
+
+                                }}
+                                onDateChange={(date) => { this.setState({ endDate: date }) }}
+                            />
 
                             {/* <View>
                                 <Image style={{ width: 5, height: 6 }} source={require('../assests/Filter/down_arrow.png')} />
@@ -187,7 +204,6 @@ export default class Filter extends Component {
                         </View>
                     </View>
                 </View>
-
 
                 <View style={styles.categories}>
                     {this.state.result.hasOwnProperty("event_venue") || this.state.result.event_venue !== undefined ?
@@ -203,7 +219,7 @@ export default class Filter extends Component {
                                 onValueChange={(itemValue, itemPosition) =>
                                     this.setState({ eventId: itemValue })}
                             >
-                                <Picker.Item label="Select..." />
+                                <Picker.Item label="Select..." color='white' />
                                 {this.state.result.event_venue.map((event, index) => {
                                     return (
                                         <Picker.Item label={event.name} value={event.id} key={index} />
@@ -219,7 +235,10 @@ export default class Filter extends Component {
                 </View>
                 {/*  */}
                 <View style={styles.categories}>
-                    <View><Text style={inlineStyle.itemHeaderText}>Entry Fee</Text></View>
+                    <View style={{ flexDirection: "row" }}>
+                        <Text style={inlineStyle.itemHeaderText}>Entry Fee </Text>
+                        <Text style={{ color: "#ffffff" }}>{" "}{this.state.entryFee}</Text>
+                    </View>
                     <View style={{ borderBottomWidth: 1, borderColor: '#707287', marginTop: 10 }}></View>
                     {this.state.result.hasOwnProperty("fees_interval") || this.state.result.fees_interval !== undefined ?
                         <View style={{
@@ -248,15 +267,22 @@ export default class Filter extends Component {
                         <Text style={inlineStyle.itemHeaderText}>Price Range</Text>
                     </View>
                     <View style={{ borderBottomWidth: 1, borderColor: '#707287', marginTop: 10 }}>
-                        <Text style={{ color: "white" }}>{this.state.payout}</Text></View>
-                    <Slider
-                        style={{ marginTop: 40, alignSelf: 'stretch' }}
-                        step={1}
-                        minimumValue={18}
-                        maximumValue={71}
-                        maximumTrackTintColor="#000"
-                        onValueChange={(value) => this.setState({ payout: value })}
-                    />
+                        <Text style={{ color: "white" }}>
+                            {this.state.payoutLow}-{this.state.payoutHigh}
+                        </Text>
+                    </View>
+                    <RangeSlider
+                        style={{ height: 80 }}
+                        //gravity={'center'}
+                        min={2000}
+                        max={80000}
+                        step={50}
+                        selectionColor="#3df"
+                        blankColor="#f618"
+                        onValueChanged={(low, high, fromUser) => {
+                            this.setState({ payoutLow: low, payoutHigh: high })
+                        }} />
+
                 </View>
                 {/* SLider */}
                 <View style={styles.categories}>
@@ -278,7 +304,9 @@ export default class Filter extends Component {
                 </View>
                 <View style={{ marginTop: 30, flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
-                        <TouchableOpacity style={inlineStyle.btnApps}>
+                        <TouchableOpacity style={inlineStyle.btnApps}
+                            onPress={() => this.resetData()}
+                        >
                             <Text style={styles.btnText}>Reset</Text>
                         </TouchableOpacity>
                     </View>
