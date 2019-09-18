@@ -123,7 +123,7 @@ export default class EventList extends Component {
 
     this.props.navigation.navigate("Filter",{
       screen_id : screen_id,
-      copm_level_id : comp_level_id,
+      comp_level_id : comp_level_id,
       category_id : category_id
     })
   }

@@ -25,7 +25,7 @@ export default class Filter extends Component {
         let token = await AsyncStorage.getItem('token');
 
         let form = new FormData();
-        form.append('token', "bfae7f26b2ab50bdbf3c19d58fec63d6");
+        form.append('token', "9c86f317eaa514a5c8b7b400a91a4600");
         form.append('screen_id', 14);
         fetch("https://nodejsdapldevelopments.com/gamebar/public/api/filter_fetch", {
             method: 'POST',
@@ -68,7 +68,7 @@ export default class Filter extends Component {
         } else if (entryFee === "") {
             alert("Select entry fees")
         } else if (payout === "") {
-            alert("Select payou")
+            alert("Select payout")
         } else {
             let form = new FormData();
             form.append('token', token);
@@ -81,6 +81,10 @@ export default class Filter extends Component {
             form.append('payout', payout);
             form.append('venue', eventId);
             form.append('game_entry_type', entryType);
+
+
+            console.log(`token ${token} screen_id ${screen_id} comp_level_id ${comp_level_id} category_id ${category_id} start_date ${startDate} end_date ${endDate}
+            entryFees ${entryFee} payout ${payout} venue ${eventId} game_entry_type ${entryType} `)
 
             fetch("https://nodejsdapldevelopments.com/gamebar/public/api/filtered_event_list", {
                 method: 'POST',
