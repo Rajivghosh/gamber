@@ -16,7 +16,7 @@ export default class GameStatistics extends Component {
     async componentDidMount() {
         let token = await AsyncStorage.getItem('token');
         let form = new FormData();
-        form.append('token', "9c86f317eaa514a5c8b7b400a91a4600");
+        form.append('token', token);
         form.append('screen_id', 14);
         fetch("https://nodejsdapldevelopments.com/gamebar/public/api/event_statistic_list", {
             method: 'POST',

@@ -176,7 +176,6 @@ class SignIn extends Component {
               <Text style={{ color: '#fff', textAlign: 'right' }}>Sign Up</Text>
             </TouchableOpacity>
           </View>
-
         </View>
       </ScrollView> : <View style={{justifyContent:'center',alignItems:'center',flex:1}}><ActivityIndicator size="large"/></View>
     }

@@ -90,7 +90,7 @@ const MainAppNavigator = createStackNavigator(
 
     },
     {
-        initialRouteName: "Lobby",
+        initialRouteName: "Splash",
         headerMode: "none"
     }
 );

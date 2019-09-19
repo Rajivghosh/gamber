@@ -16,6 +16,8 @@ import {
 
 import { styles } from '../styles';
 
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
 const {width,height} = Dimensions.get('screen')
 
 export default class SignUp extends Component {
