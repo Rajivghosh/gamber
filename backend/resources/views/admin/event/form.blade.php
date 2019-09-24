@@ -65,7 +65,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="add">Sub Category</label>
-						<select name="event_sub_cat" id="subcategory" class="form-control">
+						<select name="event_sub_cat" id="subcategory" class="form-control" required="required">
 							<option value="">Select Sub Category</option>
 						</select>
 					</div>
@@ -98,16 +98,23 @@
 					<div class="form-group">
 						<label for="add">Controls Type</label>
 						<select name="event_control_type" id="event_control_type" class="form-control" required="required">
-							<option value="controller" {{ (isset($details) and $details->control_type == 'controller') ? 'selected' : '' }}>Controller</option>
-							<option value="keyboard" {{ (isset($details) and $details->control_type == 'keyboard') ? 'selected' : '' }}>Keyboard</option>							
+							<option value="Controller" {{ (isset($details) and $details->control_type == 'controller') ? 'selected' : '' }}>Controller</option>
+							<option value="Keyboard" {{ (isset($details) and $details->control_type == 'keyboard') ? 'selected' : '' }}>Keyboard</option>							
 						</select>	
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="match_length">Match Length</label>
-						<input type="text" name="match_length" id="match_length" class="form-control" required="required" value="{{ isset($details) ? $details->match_length : old('event_title') }}"> 
+						<input type="text" name="match_length" id="match_length" class="form-control" required="required" value="{{ isset($details) ? $details->match_length : old('match_length') }}"> 
 						<p class="text-danger">{{ $errors->first('match_length') }}</p>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="maximum_contestents">Maximum Contestents</label>
+						<input type="text" name="maximum_contestents" id="maximum_contestents" class="form-control" required="required" value="{{ isset($details) ? $details->max_members : old('max_members') }}"> 
+						<p class="text-danger">{{ $errors->first('maximum_contestents') }}</p>
 					</div>
 				</div>
 				<div class="col-md-6">

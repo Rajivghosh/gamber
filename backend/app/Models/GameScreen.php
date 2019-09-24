@@ -24,4 +24,10 @@ class GameScreen extends Model
     {
         return $this->hasOne('App\Models\GameRule', 'screen_id', 'id');
     }
+
+    public function getLogoAttribute()
+    {
+        return url('game_logo').'/'.$this->game_logo;
+    }
+    protected $appends = ['logo'];
 }

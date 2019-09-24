@@ -57,7 +57,8 @@
 @section('scripts')
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('.subcat').click(function() {
+		$(document).on('click', '.subcat', function() {
+			alert ($(this).data('id'));
 			$.ajax({
 				type : "GET",
 				url : "{{ url('/admin/eventcategory/sub') }}/" + $(this).data('id'),

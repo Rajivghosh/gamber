@@ -6,6 +6,10 @@
             <div class="alert alert-success col-md-11 mx-4">
                 <strong>{{ session('success') }}</strong>
             </div>
+         @elseif(!empty(session('errors')))
+         	<div class="alert alert-danger col-md-11 mx-4">
+                <strong>{{ session('errors') }}</strong>
+            </div>
         @endif
 		<div class="container-fluid">
 			@yield('content')

@@ -27,13 +27,24 @@ class GameTypeController extends Controller
 	}
 	public function save(GameTypeRequest $req)
 	{
+		// dd( $req->input('game_type_id'));
 		if(empty($req->input()))
 			return response()->json(false);
 
-		$model = GameType::findOrNew($req->input('id'));        
-		$model->name = $req->input('type_name');	
-		$model->screen_id = $req->input('screen_id');	
-		$model->save();
+		$model = GameType::findOrNew($req->input('id')); 
+		if($req->input('game_type_id') == 0)
+		{       
+			$model->name = $req->input('type_name');	
+			$model->screen_id = $req->input('screen_id');
+			$model->save();
+		}
+		else
+		{
+			$model->name = $req->input('type_name');	
+			$model->screen_id = $req->input('screen_id');
+			$model->game_entry_type = $req->input('game_type_id');	
+			$model->save();
+		}
 		$req->session()->flash('success', 'Task was successful');
 		return redirect('/admin/game_type/list');
 	}

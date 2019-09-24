@@ -170,7 +170,7 @@ class AuthApiController extends Controller
 
                     $status = 100;
                     $statusCode = 200;
-                    $message = "Please Check Your Email For Email Verification"; 
+                    $message = "Please Check Your Email For Email Verification Code"; 
                     $output = $new_user_details; 
                 }
                 else

@@ -14,7 +14,7 @@
 					<th>Event Start Date</th>				
 					<th>Sub Category</th>					
 					<th>Status</th>
-					<th>Action</th>
+					<th style="width: 80px !important">Action</th>
 				</thead>
 				<tbody>
 					@foreach($data as $each)
@@ -30,15 +30,15 @@
 							
 							@elseif ($each->event_status == 1)
 
-							live 
+							<p style="color: green">Live</p> 
 
 							@else
 
-							History
+							<p style="color: red">History</p>
 
 							@endif
 						</td>
-						<td>
+						<td style="text-align: center;">
 							<a href="{{ url('/admin/event/edit/' . $each->id) }}" class="btn btn-sm btn-success">
 								<i class="fa fa-pencil"></i>
 							</a>

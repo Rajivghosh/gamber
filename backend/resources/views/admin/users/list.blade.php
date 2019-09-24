@@ -16,7 +16,7 @@
 					<th>Address</th>
 					<th>Zip Code</th>
 					<th>Status</th>
-					<th>Action</th>
+					<th style="width: 80px !important">Action</th>
 				</thead>
 				<tbody>
 					@if ($data->count() > 0)
@@ -55,7 +55,7 @@
 								@endif
 
 							</td>
-							<td>
+							<td style="text-align: center;">
 								<a href="{{ url('/admin/users/edit/' . $each->id) }}" class="btn btn-sm btn-success">
 									<i class="fa fa-pencil"></i>
 								</a>

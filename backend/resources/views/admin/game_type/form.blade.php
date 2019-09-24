@@ -15,6 +15,19 @@
 						<p class="text-danger">{{ $errors->first('type_name') }}</p>
 					</div>
 				</div>
+				@if(!isset($details))
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="add">Game Type</label>
+						<select name="game_type_id" class="form-control">
+							<option value="0">Select Game Type</option>
+							<option value="1">Single</option>
+							<option value="2">Multiple</option>
+							</option>		
+						</select>
+					</div>
+				</div>
+				@endif
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="add">Game Name</label>
@@ -28,6 +41,8 @@
 						</select>
 					</div>
 				</div>
+
+
 			</div>
 			<div class="row">
 				<div class="col-md-12">

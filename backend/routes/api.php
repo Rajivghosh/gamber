@@ -63,6 +63,18 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 	//Game Event Search
 	Route::post('/event_details', [ApiController::class, 'event_details']);
 
+	//Game Filter Data Fetch
+	Route::post('/filter_fetch', [ApiController::class, 'filter_fetch']);
+
+	//Filtered Game Event List
+	Route::post('/filtered_event_list', [ApiController::class, 'filtered_event_list']);
+
+	//Game Joining
+	Route::post('/event_joining', [ApiController::class, 'event_joining']);
+
+	//Game Statistics List
+	Route::post('/event_statistic_list', [ApiController::class, 'event_statistic_list']);
+
 
 
 

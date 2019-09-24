@@ -97,6 +97,8 @@ Route::prefix('/admin')->group(function() {
         Route::get('/remove/{id}', ['uses' => 'Admin\AdminUserController@remove']);
         Route::get('/details/{id}', ['uses' => 'Admin\AdminUserController@details']);
         Route::post('/status', ['uses' => 'Admin\AdminUserController@status'])->name('user.status');
+        Route::post('/liststateID', ['uses' => 'Admin\AdminUserController@liststateById']);
+        Route::post('/listcityID', ['uses' => 'Admin\AdminUserController@listcityById']);
     });
     Route::prefix('/badges')->middleware('auth:web')->group(function(){
         Route::get('/list', ['uses' => 'Admin\AdminBadgesController@index']);

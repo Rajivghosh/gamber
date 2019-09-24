@@ -35,6 +35,7 @@ class EventController extends Controller
    public function save(EventRequest $req)
     {
     	// dd($req->all());
+        $date = $date = date('Y-m-d H:i:s');
         //Event Level
         $level = CompetitionLevelType::where('id', $req->input('level_screen_id'))->first();
         $event_level = $level->name;
@@ -85,6 +86,7 @@ class EventController extends Controller
         {
         	//Event Tournament
         	$tounament = EventCategoryModel::where('id', $req->input('event_sub_cat'))->first();
+            // dd($tounament);
         	$event_tournament_array = explode('-', $tounament->name);
         	$event_tournament = $event_tournament_array[1].'TM';
         	$generate_name = $prize.' '.$game_name.'-'.$game_type.$event_tournament.'-'.$event_title.'-'.$event_venue.'-'.$event_category;	
@@ -106,9 +108,10 @@ class EventController extends Controller
         $model->venue = $req->input('event_venue'); 
         $model->control_type = $req->input('event_control_type'); 
         $model->match_length = $req->input('match_length');
+        $model->max_members = $req->input('maximum_contestents');
         $model->win_prize = $req->input('win_prize');
         $model->entry_fees = $req->input('entry_fees');   
-        $model->total_entries = 0; 
+        $model->total_entries = $req->input('maximum_contestents'); 
         $model->prize_pool = '';
         $model->event_duration = $req->input('event_duration'); 
         $model->event_sponson = $req->input('event_sponsor');

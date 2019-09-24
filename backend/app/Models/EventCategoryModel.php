@@ -28,4 +28,9 @@ class EventCategoryModel extends Model
         return $this->hasMany('App\Models\AdminEvent', 'cat_id', 'id');
     }
 
+    public function eventcount()
+    {
+        return $this->hasMany('App\Models\AdminEvent', 'cat_id', 'id')->where('event_status', '<>', 2);
+    }
+
 }
